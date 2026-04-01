@@ -14,15 +14,22 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  position: fixed; /* Cố định trên cùng */
+  top: 0; left: 0; right: 0;
+  height: 50px;
+  background: #1a1a1a;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 0 20px;
+  z-index: 1000;
   color: white;
 }
+.App-header h1 { font-size: 1rem; margin: 0; }
+.header-info { display: flex; align-items: center; gap: 15px; }
+.dashboard-container { margin-top: 70px; padding: 20px; } /* Đẩy nội dung xuống dưới Header */
+.package-card.active-sub { border: 2px solid #28a745; background-color: #f0fff4; }
+.status-tag { font-weight: bold; font-size: 0.85rem; padding: 4px 8px; border-radius: 4px; }
 
 .App-link {
   color: #61dafb;
