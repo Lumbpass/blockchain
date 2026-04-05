@@ -12,7 +12,7 @@ contract Subscription {
     struct Package {
         uint256 id;
         string name;
-        uint256 price; // Giá tính theo Wei (ví dụ 10*10^18 là 10 USDT)
+        uint256 price; // Giá tính theo Wei (ví dụ 10*10^18 là 10 USD)
         address payable seller; // Ví người bán nhận tiền
         PackageStatus status; // Trạng thái phê duyệt
     }
@@ -24,6 +24,8 @@ contract Subscription {
     // Mapping để kiểm tra người dùng đã mua gói nào chưa
     // mapping(ví người mua => mapping(id gói => trạng thái))
     mapping(address => mapping(uint256 => bool)) public hasAccess;
+    mapping(address => uint256[]) public userSubscriptions;
+    mapping(address => mapping(uint256 => bool)) public hasSubscribedHistory;
 
     event PackageCreated(uint256 indexed id, string name, uint256 price, address indexed seller);
     event PackageApproved(uint256 indexed id);
@@ -75,6 +77,11 @@ contract Subscription {
         bool success = token.transferFrom(msg.sender, pkg.seller, pkg.price);
         require(success, "Thanh toan that bai");
 
+        if (!hasSubscribedHistory[msg.sender][_packageId]) {
+        userSubscriptions[msg.sender].push(_packageId);
+        hasSubscribedHistory[msg.sender][_packageId] = true;
+        }
+
     // Cập nhật hạn dùng: Thời điểm hiện tại + 30 ngày
         expiry[msg.sender][_packageId] = block.timestamp + 30 days;
     
@@ -122,5 +129,16 @@ contract Subscription {
         return pendingPkgs;
     }
 
+    function getMyPackages() public view returns (uint256[] memory) {
+        return userSubscriptions[msg.sender];
+    }
+
+    function getAllPackages() public view returns (Package[] memory) {
+        Package[] memory allPkgs = new Package[](packageCount);
+        for (uint256 i = 1; i <= packageCount; i++) {
+            allPkgs[i - 1] = packages[i];
+        }
+        return allPkgs; 
+    }
     
 }
