@@ -60,7 +60,7 @@ function App() {
 
       // 3. Lấy danh sách ID các gói người dùng này đã mua
       const myIds = await contract.getMyPackages(); 
-      // Chuyển myIds sang dạng Number để dễ so sánh (vì từ contract về có thể là BigInt)
+      // Chuyển myIds sang dạng Number để dễ so sánh với pkg.id đã format ở trên
       const myIdsNumbers = myIds.map(id => Number(id));
 
       const purchasedList = [];

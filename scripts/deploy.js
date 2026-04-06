@@ -3,7 +3,7 @@ const hre = require("hardhat");
 async function main() {
   console.log("🚀 Đang bắt đầu deploy...");
 
-  // LẤY DANH SÁCH TÀI KHOẢN (Đây là phần bạn bị thiếu)
+  // LẤY DANH SÁCH TÀI KHOẢN 
   const [admin, merchant, subscriber] = await hre.ethers.getSigners();
 
   // 1. Deploy MockToken
